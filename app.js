@@ -9,7 +9,6 @@ const severHandle = (req, res) => {
         "env": process.env.NODE_ENV
     }
     //返回数据
-    console.log("DoDODoD03!");
     res.end(JSON.stringify(resData));
 };
 
