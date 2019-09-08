@@ -9,7 +9,7 @@ const severHandle = (req, res) => {
         "env": process.env.NODE_ENV
     }
     //返回数据
-    console.log("DoDO!");
+    console.log("DoDODo!");
     res.end(JSON.stringify(resData));
 };
 
