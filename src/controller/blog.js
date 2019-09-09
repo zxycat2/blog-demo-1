@@ -17,3 +17,7 @@ const getBlogList = (author, keyword) => {
         }
     ]
 }
+
+module.exports = {
+    getBlogList
+}
