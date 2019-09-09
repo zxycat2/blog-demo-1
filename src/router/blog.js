@@ -1,6 +1,6 @@
 //载入模块
 const { getBlogList } = require('../controller/blog');
-const {SuccessModel, ErrorModel} = require('../module/resModel')
+const {SuccessModel, ErrorModel} = require('../models/resModel')
 
 const hanldeBlogRouter = (req, res) => {
 
