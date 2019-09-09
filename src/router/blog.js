@@ -16,7 +16,7 @@ const hanldeBlogRouter = (req, res) => {
     if (req.method === 'GET' && req.path === '/api/blog/detail'){
         const id = req.query.id;
         const detailData = getBlogDetail(id);
-        return new SuccessModel(detailData, 'testMsg2');
+        return new SuccessModel(detailData, 'testMsg2')
     }
 
     //update博客
