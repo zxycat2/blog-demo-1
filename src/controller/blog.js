@@ -1,3 +1,4 @@
+//获取博客List
 const getBlogList = (author, keyword) => {
     //临时
     return [
@@ -18,6 +19,18 @@ const getBlogList = (author, keyword) => {
     ]
 }
 
+//获取博客Detail
+const getBlogDetail  = (id) => {
+    return {
+        'id':1,
+            'title':'The study of DoDo',
+            'content':'DoDo is just stupid man',
+            'createTime':1567987445710,
+            'author':'dodo himself'
+    }
+}
+
 module.exports = {
-    getBlogList
+    getBlogList,
+    getBlogDetail
 }

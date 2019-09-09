@@ -1,5 +1,5 @@
 //载入模块
-const { getBlogList } = require('../controller/blog');
+const { getBlogList, getBlogDetail} = require('../controller/blog');
 const {SuccessModel, ErrorModel} = require('../models/resModel')
 
 const hanldeBlogRouter = (req, res) => {
@@ -9,14 +9,14 @@ const hanldeBlogRouter = (req, res) => {
         const author = req.query.author || '';
         const keyword = req.query.keyword || '';
         const listData = getBlogList(author, keyword);
-        return new SuccessModel(listData, 'testMsg')
+        return new SuccessModel(listData, 'testMsg1')
     }
 
     //获取博客detail
     if (req.method === 'GET' && req.path === '/api/blog/detail'){
-        return {
-            "msg":"获取博客detail"
-        }
+        const id = req.query.id;
+        const detailData = getBlogDetail(id);
+        return new SuccessModel(detailData, 'testMsg2');
     }
 
     //update博客
