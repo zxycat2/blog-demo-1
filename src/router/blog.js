@@ -1,10 +1,15 @@
+//载入模块
+const {getList} = require('./src/controller/blog');
+const {SuccessModel, ErrorModel} = require('./src/module/resModel')
+
 const hanldeBlogRouter = (req, res) => {
 
     //获取博客list
     if (req.method === 'GET' && req.path === '/api/blog/list'){
-        return {
-            "msg":"获取博客list"
-        }
+        const author = req.query.author || '';
+        const keyword = req.query.keyword || '';
+        const listData = getList(author, keyword);
+        return new SuccessModel(listData, 'testMsg')
     }
 
     //获取博客detail

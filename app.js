@@ -1,6 +1,8 @@
 //载入模块
-const blogRouterHandler = require('./src/router/blog')
-const userRouterHandler = require('./src/router/user')
+const blogRouterHandler = require('./src/router/blog');
+const userRouterHandler = require('./src/router/user');
+const queryString = require('querystring');
+
 //具体控制sever
 const severHandle = (req, res) => {
     //设置返回数据类型
@@ -9,6 +11,9 @@ const severHandle = (req, res) => {
     //获取reques信息
     const url = req.url;
     req.path = url.split('?')[0];
+
+    //解析query
+    req.query = queryString.parse(url.split('?')[1]);
 
     //处理blog路由
     const blogData = blogRouterHandler(req, res);
