@@ -1,5 +1,5 @@
 //载入模块
-const { getList } = require('../controller/blog');
+const { getBlogList } = require('../controller/blog');
 const {SuccessModel, ErrorModel} = require('../module/resModel')
 
 const hanldeBlogRouter = (req, res) => {
@@ -8,7 +8,7 @@ const hanldeBlogRouter = (req, res) => {
     if (req.method === 'GET' && req.path === '/api/blog/list'){
         const author = req.query.author || '';
         const keyword = req.query.keyword || '';
-        const listData = getList(author, keyword);
+        const listData = getBlogList(author, keyword);
         return new SuccessModel(listData, 'testMsg')
     }
 
