@@ -1,5 +1,10 @@
 //载入模块
-const { getBlogList, getBlogDetail} = require('../controller/blog');
+const { getBlogList, 
+        getBlogDetail, 
+        createNewBlog,
+        updateBlog,
+        deleteBlog
+    } = require('../controller/blog');
 const {SuccessModel, ErrorModel} = require('../models/resModel')
 
 const hanldeBlogRouter = (req, res) => {
@@ -21,23 +26,33 @@ const hanldeBlogRouter = (req, res) => {
 
     //update博客
     if (req.method === 'POST' && req.path === '/api/blog/update'){
-        return {
-            "msg":"update博客"
+        const id = req.query.id;
+        const blogData = req.body;
+        const result = updateBlog(id, blogData);
+        if (result){
+            return new SuccessModel();
+        }else{
+            return new ErrorModel('更新博客失败');
         }
     }
 
     //delete博客
     if (req.method === 'POST' && req.path === '/api/blog/delete'){
-        return {
-            "msg":"delete博客"
+        const id = req.query.id;
+        const result = deleteBlog(id);
+        if (result){
+            return new SuccessModel();
+        }else{
+            return new ErrorModel('删除博客失败');
         }
     }
 
     //new博客
     if (req.method === 'POST' && req.path === '/api/blog/new'){
-        return {
-            "msg":"new博客"
-        }
+        const blogData = req.body;
+        
+        return new SuccessModel(createNewBlog(blogData), 'newBlogMsg')
+        
     }
 
 }
