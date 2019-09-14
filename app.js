@@ -48,10 +48,17 @@ const severHandle = (req, res) => {
         (postData) => {
             req.body = postData;
             //处理blog路由
-            const blogData = blogRouterHandler(req, res);
-            if (blogData){
-                res.end(JSON.stringify(blogData));
-                return;
+            // const blogData = blogRouterHandler(req, res);
+            // if (blogData){
+                // res.end(JSON.stringify(blogData));
+                // return;
+            // }
+            const blogDataPromise = blogRouterHandler(req, res)
+            if (blogDataPromise) {
+                blogDataPromise.then( blogData => {
+                    res.end(JSON.stringify(blogData));
+                    return; 
+                })
             }
 
             //处理user路由

@@ -1,22 +1,18 @@
+const {excute} = require('../db/mysql');
+
 //获取博客List
 const getBlogList = (author, keyword) => {
-    //临时
-    return [
-        {
-            'id':1,
-            'title':'The study of DoDo',
-            'content':'DoDo is just stupid man',
-            'createTime':1567987445710,
-            'author':'dodo himself'
-        },
-        {
-            'id':2,
-            'title':'The study of DoDo2',
-            'content':'DoDo is just stupid man2',
-            'createTime':1567987513614,
-            'author':'dodo himself2'
-        }
-    ]
+    //执行sql语句
+    let sql = 'select * from myBlogs where 1=1 ';
+    if (author){
+        sql += ` and author = '${author}' `
+    };
+    if (keyword){
+        sql += ` and title like '%${keyword}%'`
+    }
+    sql += ` order by createTime desc;`;
+    //注意此处return的是一个promise
+    return excute(sql);
 }
 
 //获取博客Detail
