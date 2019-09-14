@@ -13,8 +13,11 @@ const hanldeBlogRouter = (req, res) => {
     if (req.method === 'GET' && req.path === '/api/blog/list'){
         const author = req.query.author || '';
         const keyword = req.query.keyword || '';
-        const listData = getBlogList(author, keyword);
-        return new SuccessModel(listData, 'testMsg1')
+        // const listData = getBlogList(author, keyword);
+        // return new SuccessModel(listData, 'testMsg1')
+        const resultBlogPromise = getBlogList(author, keyword).then( listData => {
+            return new SuccessModel(listData, 'testMsg1');
+        })
     }
 
     //获取博客detail
