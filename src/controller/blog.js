@@ -3,7 +3,7 @@ const {excute} = require('../db/mysql');
 //获取博客List
 const getBlogList = (author, keyword) => {
     //执行sql语句
-    let sql = 'select * from myBlogs where 1=1 ';
+    let sql = 'select * from blogs where 1=1 ';
     if (author){
         sql += ` and author = '${author}' `
     };
