@@ -15,7 +15,8 @@ const hanldeBlogRouter = (req, res) => {
         const keyword = req.query.keyword || '';
         // const listData = getBlogList(author, keyword);
         // return new SuccessModel(listData, 'testMsg1')
-        const resultBlogPromise = getBlogList(author, keyword).then( listData => {
+        const resultBlogPromise = getBlogList(author, keyword)
+        return resultBlogPromise.then( listData => {
             return new SuccessModel(listData, 'testMsg1');
         })
     }
@@ -23,8 +24,12 @@ const hanldeBlogRouter = (req, res) => {
     //获取博客detail
     if (req.method === 'GET' && req.path === '/api/blog/detail'){
         const id = req.query.id;
-        const detailData = getBlogDetail(id);
-        return new SuccessModel(detailData, 'testMsg2')
+        // const detailData = getBlogDetail(id);
+        // return new SuccessModel(detailData, 'testMsg2')
+        const detailResultPromise = getBlogDetail(id);
+        return detailResultPromise.then( detailData => {
+            return new SuccessModel(detailData, 'testMsg');
+        })
     }
 
     //update博客

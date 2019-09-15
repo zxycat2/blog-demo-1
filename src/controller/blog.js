@@ -17,13 +17,11 @@ const getBlogList = (author, keyword) => {
 
 //获取博客Detail
 const getBlogDetail  = (id) => {
-    return {
-        'id':1,
-            'title':'The study of DoDo',
-            'content':'DoDo is just stupid man',
-            'createTime':1567987445710,
-            'author':'dodo himself'
-    }
+    const sql = `select * from blogs where id='${id}'`;
+
+    return excute(sql).then( allResults => {
+        return allResults[0];
+    });
 }
 
 //新建博客
