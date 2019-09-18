@@ -36,31 +36,39 @@ const hanldeBlogRouter = (req, res) => {
     if (req.method === 'POST' && req.path === '/api/blog/update'){
         const id = req.query.id;
         const blogData = req.body;
-        const result = updateBlog(id, blogData);
-        if (result){
-            return new SuccessModel();
-        }else{
-            return new ErrorModel('更新博客失败');
-        }
+        return updateBlog(id, blogData).then( result => {
+            if (result){
+                return new SuccessModel();
+            }else{
+                return new ErrorModel('更新博客失败');
+            }
+        })
+        
     }
 
     //delete博客
     if (req.method === 'POST' && req.path === '/api/blog/delete'){
         const id = req.query.id;
-        const result = deleteBlog(id);
-        if (result){
-            return new SuccessModel();
-        }else{
-            return new ErrorModel('删除博客失败');
-        }
+        //临时假数据
+        const author = 'tempNewDoDoAuthor'
+        return result = deleteBlog(id, author).then( result => {
+            if (result){
+                return new SuccessModel();
+            }else{
+                return new ErrorModel('删除博客失败');
+            }
+        })
     }
 
     //new博客
     if (req.method === 'POST' && req.path === '/api/blog/new'){
         const blogData = req.body;
-        
-        return new SuccessModel(createNewBlog(blogData), 'newBlogMsg')
-        
+        //临时 假数据
+        blogData.author = 'tempNewDoDoAuthor';
+
+        return resultPromise = createNewBlog(blogData).then( idObj => {
+            return new SuccessModel(idObj, 'newBlogMsg')
+        })
     }
 
 }

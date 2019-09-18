@@ -20,6 +20,8 @@ const getBlogDetail  = (id) => {
     const sql = `select * from blogs where id='${id}'`;
 
     return excute(sql).then( allResults => {
+        // console.log(allResults);
+        // console.log(allResults[0]);
         return allResults[0];
     });
 }
@@ -27,23 +29,52 @@ const getBlogDetail  = (id) => {
 //新建博客
 const createNewBlog = (blogData = {}) => {
 
+    const title = blogData.title;
+    const content = blogData.content;
+    const author = blogData.author;
+    const createTime = Date.now();
+
+    const sql = `insert into blogs (title, content, createTime, author) 
+    values ('${title}','${content}', '${createTime}', '${author}')`;
+
+    return excute(sql).then( resultObj => {
+        console.log(resultObj);
+        return {
+            id:resultObj.insertId
+        };
+    })
+
      //返回新博客在数据库中的id，证明新建成功
-     return {
-        id:450
-    };
+     
 }
 
 //更新博客
 const updateBlog = (id, blogData = {}) => {
+    const title = blogData.title;
+    const content = blogData.content;
 
-    return true;
+    const sql = `update blogs set title='${title}', content='${content}' 
+    where id=${id}`;
+    console.log(sql);//c
+    return excute(sql).then( resultObj => {
+        if (resultObj.affectedRows > 0){
+            return true;
+        }else{
+            return false;
+        }
+    })
 }
 
 //删除博客
-const deleteBlog = (id) => {
-    console.log('id', id);
-
-    return true;
+const deleteBlog = (id, author) => {
+    const sql = `delete from blogs where id=${id} and author='${author}'`;
+    return excute(sql).then( resultObj => {
+        if (resultObj.affectedRows > 0){
+            return true;
+        }else{
+            return false;
+        }
+    })
 }
 
 module.exports = {
