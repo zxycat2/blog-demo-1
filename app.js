@@ -2,9 +2,10 @@
 const blogRouterHandler = require('./src/router/blog');
 const {handleUserRouter, getCookieExpiresData} = require('./src/router/user');
 const queryString = require('querystring');
+const {setDataToRedis, getDataFromRedis} = require('./src/db/redis');
 
 
-const SESSION_DATA = {};
+// const SESSION_DATA = {};
 
 //具体控制sever
 const severHandle = (req, res) => {
@@ -31,25 +32,7 @@ const severHandle = (req, res) => {
         req.cookie[key] = value;
     });
 
-    //解析seesion
-    console.log('parsing session')
-    let needToSetCookie = false;
-    let userID = req.cookie.userid;
-    console.log('userid:', userID);
-    if (userID){
-        if (!SESSION_DATA[userID]){
-            SESSION_DATA[userID] = {};
-        }
-    }else{
-        needToSetCookie = true;
-        userID = `${Date.now()}_${Math.random()}`;
-        SESSION_DATA[userID] = {};
-    }
-    req.session = SESSION_DATA[userID];
-    console.log('session after parsing:', req.session);
-    
-
-    //获取postData
+        //获取postData
     const getPostData = (req) => {
         const promise = new Promise( (resolve, reject) => {
             if (req.method !== 'POST'){
@@ -78,7 +61,25 @@ const severHandle = (req, res) => {
         return promise;
     }
 
-    getPostData(req).then(
+    //解析seesion
+    let needToSetCookie = false;
+    let userID = req.cookie.userid;
+    if (!userID){
+        needToSetCookie = true;
+        userID = `${Date.now()}_${Math.random()}`;
+        setDataToRedis(userID, {});
+    }
+    req.sessionID = userID;
+    getDataFromRedis(req.sessionID).then( (sessionData) => {
+        if (sessionData == null){
+            setDataToRedis(req.sessionID, {});
+            req.session = {};
+        }else{
+            req.session = sessionData;
+        }
+        //
+        return getPostData(req);
+    }).then(
         (postData) => {
             req.body = postData;
             //处理blog路由
@@ -116,17 +117,13 @@ const severHandle = (req, res) => {
             res.end();
         }
     )
-
-
-    
-
-    //测试
-    // const resData = {
-    //     "name":"DoDo",
-    //     "age":12,
-    //     "env": process.env.NODE_ENV
-    // }
-    // res.end(JSON.stringify(resData));
-};
+}
+//测试
+// const resData = {
+//     "name":"DoDo",
+//     "age":12,
+//     "env": process.env.NODE_ENV
+// }
+// res.end(JSON.stringify(resData));
 
 module.exports = severHandle;
