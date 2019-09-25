@@ -17,14 +17,14 @@ class BaseModel {
 class SuccessModel extends BaseModel{
     constructor (data, msg){
         super(data, msg);
-        this.errorNumber = 0;
+        this.errno = 0;
     }
 }
 
 class ErrorModel extends BaseModel{
     constructor (data, msg){
         super(data, msg);
-        this.errorNumber = -1;
+        this.errno = -1;
     }
 }
 

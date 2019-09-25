@@ -83,16 +83,11 @@ const severHandle = (req, res) => {
         (postData) => {
             req.body = postData;
             //处理blog路由
-            // const blogData = blogRouterHandler(req, res);
-            // if (blogData){
-                // res.end(JSON.stringify(blogData));
-                // return;
-            // }
             const blogDataPromise = blogRouterHandler(req, res)
             if (blogDataPromise) {
                 blogDataPromise.then( blogData => {
                     if (needToSetCookie){
-                        res.setHeader('Set-Cookie', `userid=${userID};path=/;httpOnly;expires=${getCookieExpiresData()}`)
+                        res.setHeader('Set-Cookie', `userid=${userID};path=/;httpOnly;expires=${getCookieExpiresData()}}`)
                     }
                     res.end(JSON.stringify(blogData)); 
                 })

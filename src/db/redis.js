@@ -8,7 +8,7 @@ redisCli.on('error', (err) => {
 
 //get func
 function setDataToRedis(key, val){
-    if (typeof val == Object){
+    if (typeof val === 'object'){
         val = JSON.stringify(val);
     }
     redisCli.set(key, val, redis.print);
