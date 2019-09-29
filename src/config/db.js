@@ -10,7 +10,8 @@ if (env === 'dev'){
         user: 'root',
         password: 'rmdxyy2L.',
         port: '3306',
-        database: 'myBlog'
+        database: 'myBlog',
+        useConnectionPooling: true
     }
     //redis config
     REDIS_CONFIG = {
@@ -24,7 +25,8 @@ if (env === 'dev'){
         user: 'root',
         password: 'rmdxyy2L.',
         port: '3306',
-        database: 'myBlog'
+        database: 'myBlog',
+        useConnectionPooling: true
     }
     //redis config
     REDIS_CONFIG = {

@@ -3,12 +3,17 @@ const blogRouterHandler = require('./src/router/blog');
 const {handleUserRouter, getCookieExpiresData} = require('./src/router/user');
 const queryString = require('querystring');
 const {setDataToRedis, getDataFromRedis} = require('./src/db/redis');
+const {writeToAccessLog} = require('./src/uil/log');
 
 
 // const SESSION_DATA = {};
 
 //具体控制sever
 const severHandle = (req, res) => {
+    //写access log
+    const logData = `${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`;
+    writeToAccessLog(logData);
+
     //设置返回数据类型
     res.setHeader('Content-type', 'application/json');
 

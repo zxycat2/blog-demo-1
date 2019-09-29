@@ -1,14 +1,17 @@
-const {excute} = require('../db/mysql');
+const {excute, escape} = require('../db/mysql');
 
 //获取博客List
 const getBlogList = (author, keyword) => {
+    //防止sql注入
+    author = escape(author);
+    keyword = escape(keyword);
     //执行sql语句
     let sql = 'select * from blogs where 1=1 ';
     if (author){
-        sql += ` and author = '${author}' `
+        sql += ` and author = ${author} `
     };
     if (keyword){
-        sql += ` and title like '%${keyword}%'`
+        sql += ` and title like %${keyword}%`
     }
     sql += ` order by createTime desc;`;
     //注意此处return的是一个promise
@@ -17,7 +20,10 @@ const getBlogList = (author, keyword) => {
 
 //获取博客Detail
 const getBlogDetail  = (id) => {
-    const sql = `select * from blogs where id='${id}'`;
+    //防止sql注入
+    id = escape(id);
+
+    const sql = `select * from blogs where id=${id}`;
 
     return excute(sql).then( allResults => {
         // console.log(allResults);
@@ -28,14 +34,14 @@ const getBlogDetail  = (id) => {
 
 //新建博客
 const createNewBlog = (blogData = {}) => {
-
-    const title = blogData.title;
-    const content = blogData.content;
-    const author = blogData.author;
+    //防止sql注入
+    const title = escape(blogData.title);
+    const content = escape(blogData.content);
+    const author = escape(blogData.author);
     const createTime = Date.now();
 
     const sql = `insert into blogs (title, content, createTime, author) 
-    values ('${title}','${content}', '${createTime}', '${author}')`;
+    values (${title},${content}, '${createTime}', ${author})`;
 
     return excute(sql).then( resultObj => {
         console.log(resultObj);
@@ -50,10 +56,12 @@ const createNewBlog = (blogData = {}) => {
 
 //更新博客
 const updateBlog = (id, blogData = {}) => {
-    const title = blogData.title;
-    const content = blogData.content;
+    //防止sql注入
+    id = escape(id);
+    const title = escape(blogData.title);
+    const content = escape(blogData.content);
 
-    const sql = `update blogs set title='${title}', content='${content}' 
+    const sql = `update blogs set title=${title}, content=${content} 
     where id=${id}`;
     console.log(sql);//c
     return excute(sql).then( resultObj => {
@@ -67,7 +75,10 @@ const updateBlog = (id, blogData = {}) => {
 
 //删除博客
 const deleteBlog = (id, author) => {
-    const sql = `delete from blogs where id=${id} and author='${author}'`;
+    //防止sql注入
+    id = escape(id);
+    author = escape(author);
+    const sql = `delete from blogs where id=${id} and author=${author}`;
     return excute(sql).then( resultObj => {
         if (resultObj.affectedRows > 0){
             return true;
